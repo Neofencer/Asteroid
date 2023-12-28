@@ -1,10 +1,12 @@
-import pygame, sys
+import pygame, sys, pygame_menu
 from ship import Ship
 from settings import*
 from random import randint
 from meteor import Meteor
 from score import Score
 from laser import Laser
+
+
 
 class Game:
     def __init__(self):
@@ -62,19 +64,29 @@ class Game:
             laser_group.update(dt)
             meteor_group.update(dt)
             
-                        
-            
-
+                     
             #draw groups
             self.space_group.draw(self.display_surface)
             pygame.draw.rect(self.display_surface,(255,255,255),score.text_rect.inflate(30,30), width=8,border_radius=5)
             meteor_group.draw(self.display_surface)
             laser_group.draw(self.display_surface)
-    
+           
    
 
+    def start_game(self):
+        game = Game()
+        game.run()
 
-if __name__=='__main__':
+if __name__ == '__main__':
     game = Game()
-    game.run()
-    
+
+    menu = pygame_menu.Menu('Welcome', 400, 300,
+                            theme=pygame_menu.themes.THEME_BLUE)
+
+    menu.add.button('Play', game.start_game)
+    menu.add.button('Quit', pygame_menu.events.EXIT)
+
+    menu.mainloop(game.display_surface)
+    if menu.is_enabled():
+        game.run()
+        
